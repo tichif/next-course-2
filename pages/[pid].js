@@ -2,11 +2,11 @@ import path from 'path';
 import fs from 'fs/promises';
 
 const ProductDetailPage = (props) => {
-  const { product } = props;
+  const { loadedProduct } = props;
   return (
     <>
-      <h1>{product.title}</h1>
-      <p>{product.description}</p>
+      <h1>{loadedProduct.title}</h1>
+      <p>{loadedProduct.description}</p>
     </>
   );
 };
@@ -23,7 +23,20 @@ export async function getStaticProps(context) {
   const product = data.products.find((product) => product.id === productId);
 
   return {
-    loadedProduct: product,
+    props: {
+      loadedProduct: product,
+    },
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { pid: 'p1' } },
+      { params: { pid: 'p2' } },
+      { params: { pid: 'p3' } },
+    ],
+    fallback: false,
   };
 }
 
